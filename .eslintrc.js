@@ -16,6 +16,6 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    "func-names": "off" // I changed this rule by myself, because i think this is excess rule
+
   },
 };
