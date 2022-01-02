@@ -79,17 +79,18 @@ function processAllPromises(array) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
-  // return new Promise((resolve, reject) => {
-  //   Promise.any(array).then((value) => {
-  //     resolve(value);
-  //   }, () => {
-  //     Promise.race(array).catch((error) => {
-  //       reject(error);
-  //     });
-  //   });
-  // });
+function getFastestPromise(array) {
+  return new Promise((resolve, reject) => {
+    const goodList = []; const
+      badList = [];
+    array.forEach((elem) => {
+      elem.then(() => goodList.push(elem), () => badList.push(elem));
+    });
+    setTimeout(() => {
+      if (goodList.length > 0) { goodList[0].then((value) => resolve(value)); }
+      if (goodList.length === 0) { badList[0].catch((err) => reject(err)); }
+    }, 1500);
+  });
 }
 
 /**
