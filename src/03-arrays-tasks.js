@@ -523,8 +523,17 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const keysList = array.map(keySelector).filter((elem, index, a) => a.indexOf(elem) === index);
+  const ans = []; // no-param-reassign from eslint doesn't allow to do it good
+  keysList.reduce((prev, elem) => {
+    ans.push(Array(elem));
+    const last = ans.length - 1;
+    ans[last].push(array.filter((value) => keySelector(value) === elem));
+    ans[last][1] = ans[last][1].map((value) => valueSelector(value));
+    return ans;
+  }, ans);
+  return new Map(ans);
 }
 
 
@@ -541,8 +550,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.flatMap(childrenSelector);
 }
 
 
@@ -558,8 +567,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((array, index) => array[index], arr);
 }
 
 
@@ -581,8 +590,15 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const ans = arr;
+  return ans.map((elem, index, a) => {
+    const len = a.length;
+    if (len % 2 === 1 && index === Math.floor(len / 2)) { return elem; }
+    const swapIndex = Math.floor(len / 2) + (len % 2);
+    if (index < len / 2) { return arr[index + swapIndex]; }
+    return arr[index - swapIndex];
+  });
 }
 
 
