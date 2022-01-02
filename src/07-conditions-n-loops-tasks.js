@@ -376,8 +376,14 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  let ans = '';
+  let x = num;
+  while (x > 0) {
+    ans = (x % n).toString() + ans;
+    x = Math.floor(x / n);
+  }
+  return ans;
 }
 
 
@@ -393,8 +399,20 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  if (pathes.length === 1) { return pathes[0]; }
+  let ans = pathes[0];
+  for (let i = 1; i < pathes.length; i += 1) {
+    for (let pos = 0; pos < Math.min(ans.length, pathes[i].length); pos += 1) {
+      if (ans[pos] !== pathes[i][pos]) {
+        let common = pos - 1;
+        while (common > 0 && ans[common] !== '/') { common -= 1; }
+        ans = ans.slice(0, common + 1);
+        break;
+      }
+    }
+  }
+  return ans;
 }
 
 
@@ -416,8 +434,17 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const ans = [];
+  for (let i = 0; i < m1.length; i += 1) {
+    ans.push([]);
+    for (let j = 0; j < m2[i].length; j += 1) {
+      let sum = 0;
+      for (let t = 0; t < m1[i].length; t += 1) { sum += m1[i][t] * m2[t][j]; }
+      ans[i].push(sum);
+    }
+  }
+  return ans;
 }
 
 
@@ -451,8 +478,17 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const a = position;
+  if (a[0][0] === a[0][1] && a[0][0] === a[0][2] && typeof a[0][0] !== 'undefined') return a[0][0];
+  if (a[1][0] === a[1][1] && a[1][0] === a[1][2] && typeof a[1][0] !== 'undefined') return a[1][0];
+  if (a[2][0] === a[2][1] && a[2][0] === a[2][2] && typeof a[2][0] !== 'undefined') return a[2][0];
+  if (a[0][0] === a[1][0] && a[0][0] === a[2][0] && typeof a[0][0] !== 'undefined') return a[0][0];
+  if (a[0][1] === a[1][1] && a[0][1] === a[2][1] && typeof a[0][1] !== 'undefined') return a[0][1];
+  if (a[0][2] === a[1][2] && a[0][2] === a[2][2] && typeof a[0][2] !== 'undefined') return a[0][2];
+  if (a[0][0] === a[1][1] && a[0][0] === a[2][2] && typeof a[0][0] !== 'undefined') return a[0][0];
+  if (a[2][0] === a[1][1] && a[2][0] === a[0][2] && typeof a[2][0] !== 'undefined') return a[2][0];
+  return undefined;
 }
 
 
